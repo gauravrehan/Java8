@@ -1,0 +1,85 @@
+Interfaces and Inner classes
+
+Interfaces define a contract that a class implementing it should adhere to.
+Interface cannot have an implementation.
+
+if Employee class implements Comparable<Employee> then things become little tricky
+for the subclasses if they want to override the comareTo. if subclasses
+have their own notion of comparability then they should override the compareTo otherwise not.
+if they decide to override, then they should start with comparing the class types
+by if(this.getClass() != o.getClass()) throw new ClassCastException.
+
+Interfaces cannot have properties. but they can have constants:
+double SPEED_LIMIT = 98 (they are auto public static final).
+
+
+Multiple inheritance:
+Java just didn't chose to not to complicate the programming language by by including multiple inheritance.
+if you want a similar kind of behaviour, you can extend a class and implement multiple interfaces.
+with multiple inheritance, you also get default behavior, but in java you don't get a default behavior because interfaces cannot have an imple.
+
+Object cloning
+
+clone() is a protected method. so you cannot call this on an object. to call this on an object,
+you need to implement clonable marker interface, and then implement clone(). in the implementation,
+call super.clone() to allow the base class take care of cloning. Mark this as public and add Override annotation.
+in shallow copy, the primitive types are copied over (cloned). but the ref type's references are copied over.
+
+For Deep cloning, in the clone implementation take care of cloning of mutable objects yourself.
+
+Another way of object cloning is to make use of object serialisation (less efficient).
+
+
+Inner Classes
+Why?
+It is a way for grouping classes that are only used in one place. inner classes increases encapsulation.
+Inner class methods can access the private data of the outer class.
+Inner class can be hidden from other classes in the same package (only inner classes can be private).
+Anonymous classes are handy for writing the callbacks as you write less code.
+
+static member can only be declared in an inner class only if the inner class is marked as static.
+
+Inner classes are complex. Compiler compiles inner classes into regular classes. JVM knows nothing about Inner classes.
+When inner classes are compiled, they are converted to outer$inner classes with dollar in between.
+they are regular classes.
+If you try to create regular classes mimicing inner classes, you cannot share private field member.
+to allow accessing the private field member, the compiler does two thing:
+a) The inner class has a final reference to the outer class, which is inititalized by the inner class constructor.
+b) The outer class exposes the static function that allows exposing the private field to inner class.
+
+since the static function is package visible, hacker with hex code can write code to access the private field via the static member (they 
+also need to keep their malicious class in the package of the outer class).
+
+so, to access the beep private field, the inner class does:
+if(access$0(outer) // here access$0 is outer class static method, and outer is the inner class reference to outer class.
+
+
+Local Inner Classes
+
+Inner classes defined within the method are called local inner classes. they can access the local variable values as well (needs to be final).
+From java 8 onwards, the local variable access in the class can be final or effectively final (not changing after assignement).
+
+Annonymous classes
+Anonymous classes enable you to make your code more concise. They enable you to declare and instantiate a class at the same time. They are like local classes except that they do not have a name. Use them if you need to use a local class only once.
+
+Restrictions for Local and Anonymous Inner classes:
+a) Local classes are similar to non-static inner classes because they cannot define or declare any static members. Local classes in static methods, can only refer to static members of the enclosing class. Local classes in this context are non static, hence they cannot declare any static content.
+b) You cannot declare static initializers or member interfaces in a local class. 
+c) A local class can have static members provided that they are constant variables.
+
+
+
+You cannot declare an interface inside a block; interfaces are inherently static. For example, the following code excerpt does not compile because the interface HelloThere is defined inside the body of the method greetInEnglish:
+
+Static Inner Classes
+
+When you dont want the inner class to have a reference to the outer classs, you can delcare them as static.
+so you can use static inner class when you want to hide a class inside a class and also don't want it to have a reference back to outer class.
+Static inner classes can be instantiated in the outer class like regular classes ( you might think that this is a static class so cannot be instantiated which is wrong)
+
+
+
+
+
+
+

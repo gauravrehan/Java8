@@ -1,0 +1,14 @@
+Objects and classes
+
+Encapsulation is the key, create fields as private and create accessors and mutators to access. if the class has has a field which belongs to a non immutable class then we should return a clone of it from its accessor to preserve encapsulation.
+Java uses pass by value even for the reference types
+Java compiler have current directory in classpath. but java doesn't have current directory in classpath until we specify . in the classpath.
+if we don't specify a access modifier, then it is default package visible.
+prior to java 1.2, we could create user classes with package name java.awt. include the package in classpath and was able to access the package visible assets. from java 1.2, classloaders prohibits it.
+methods can access the private data of that object. but, methods can also access private data of all objects of that class. this is little surprising.
+class level fields if not explicitly initialized then they get auto initialized to defaults. but for local variables we always have to explicitly initialize them.
+at class level, we can initialize the fields in their declaration, b) in initialization block and c) in constructor. in this order.
+similar order of initialization is followed for static fields.
+
+
+ 

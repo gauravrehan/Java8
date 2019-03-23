@@ -1,0 +1,153 @@
+Threads can be created either by implementing runnable or by extending Thread class. implementing Runnable is a practical way of creating threads.
+Thread t = new Thread(new Runnable(){syso{8};};).start();
+when a thread is interrupted, the interrupt status can be checked by the thread by calling Thread.interrupted(). this checks for interrupt flag and resets it if it was set.
+we can use threadObject.isInterrupted() to check the interrupt status. but this function doesn't reset the interrupt flag.
+When thread is interrupted while the thread is in sleep state, the thread immediately comes out and throws the InterruptedException.
+Similar to sleep, join also throws InterruptedException.
+
+If multiple threads are access same data fields, issues can happen:
+Thread Interference : ones threads writes are overwritten by another thread (counter example).
+Memory consistency errors : when multiple threads have different view of same data.
+
+Above issues can be fixed by setting up happens before conditions. synchronization is one way of enforcing happens before construct.
+
+Synchronization: Methods and Statements.
+it uses intrinsic lock to guard.
+
+Atomicity:
+Read and write of ref type variables including primitive types (excluding long and double) is atomic.
+if we use volatile then read and writes to all variables become atomic.
+
+Volatile just maintain happens before relationship (Address thread interference). but memory inconsistency issues may still exist. so better use synchronization.
+
+Multithreading application often face liveness problems like deadlock, starvation and livelock.
+
+Deadlock
+Deadlock describes a situation where two or more threads are blocked forever, waiting for each other
+
+Starvation
+Starvation describes a situation where a thread is unable to gain regular access to shared resources and is unable to make progress. This happens when shared resources are made unavailable for long periods by "greedy" threads. For example, suppose an object provides a synchronized method that often takes a long time to return. If one thread invokes this method frequently, other threads that also need frequent synchronized access to the same object will often be blocked.
+
+Livelock
+A thread often acts in response to the action of another thread. If the other thread's action is also a response to the action of another thread, then livelock may result. As with deadlock, livelocked threads are unable to make further progress. However, the threads are not blocked — they are simply too busy responding to each other to resume work. This is comparable to two people attempting to pass each other in a corridor: Alphonse moves to his left to let Gaston pass, while Gaston moves to his right to let Alphonse pass. Seeing that they are still blocking each other, Alphone moves to his right, while Gaston moves to his left. They're still blocking each other, so... 
+
+Guarded blocks
+when a function needs to check a condition flag before proceeding and that flag is being set by another thread. in such situation, we can either loop over the flag and check or we just use wait function.
+wait is better because invoking wait will suspend the thread and release the lock. other threads can acquire the same lock and set the conditional flag and call notify all to notify other objects.
+when the second thread releases the lock (by exiting the synchronized function), the first thread then acquires the lock and start from wait onwards.
+Wait should always be called in a loop because you never now your condition is still met or not.
+ 
+Have coded a basic producer consumer implementation using guarded blocks.
+
+
+Immutable objects:
+An object is considered immutable if its state cannot change after it is constructed. Maximum reliance on immutable objects is widely accepted as a sound strategy for creating simple, reliable code.
+Immutable objects are particularly useful in concurrent applications. Since they cannot change state, they cannot be corrupted by thread interference or observed in an inconsistent state.
+
+To make an immutable class, follow the following:
+    Don't provide "setter" methods — methods that modify fields or objects referred to by fields.
+    Make all fields final and private.
+    Don't allow subclasses to override methods. The simplest way to do this is to declare the class as final. A more sophisticated approach is to make the constructor private and construct instances in factory methods.
+    If the instance fields include references to mutable objects, don't allow those objects to be changed:
+        Don't provide methods that modify the mutable objects.
+        Don't share references to the mutable objects. Never store references to external, mutable objects passed to the constructor; if necessary, create copies, and store references to the copies. Similarly, create copies of your internal mutable objects when necessary to avoid returning the originals in your methods.
+
+
+Run method cannot throw checked exception. it can terminate when an unchecked exception is thrown. when this happens, the exception is passed on to default handler. the handler should implement UncaughtExceptionHandler.
+by default the ThreadGroup class defines the default unhandled exception handler.
+When a thread dies ThreadDeath object is thrown. The Thread death objects are generated by the depricated stop method.
+
+
+A thread can be set as daemon thread. this is not recommended becauase if there are just daemon thread left in the process than jvm shutdown. dont use daemon threads for accessing files/databases.
+
+priority can be set as setPriority. this is also not recommended because this could lead to low priority thread to starve.
+
+States:
+thread can be in NEW, RUNNABLE, BLOCKED, WAIT, TIMEDWAIT, or TERMINATED state. difference between the blocked and wait. when a thread is trying to get hold of an intrinsic lock which is acquired by another thread, then the thread gets blocked.
+thread goes into wait state when it is waiting to acquire a non-interinsic lock or wait has been called.
+
+_________________
+
+Synchronization
+look at the bank transfer example which uses Renterrant lock and Conditions objects.
+using Renterent lock conditions object gives finer control over locking. A renterent lock can have 1 or more than 1 conditions objects. With synchronized keyword, this is not possible 
+because with interinsic lock only one condition object is associated.
+
+The intrinsic lock and condition have some limitations. Among them:
+• You cannot interrupt a thread that is trying to acquire a lock.
+• You cannot specify a timeout when trying to acquire a lock.
+• Having a single condition per lock can be inefficient.
+What should you use in your code—Lock and Condition objects or synchronized methods? Here is our recommendation:
+• It is best to use neither Lock/Condition nor the synchronized keyword. In many situations, you can use one of the mechanisms of the java.util.concurrent package that do all the locking for you. 
+For example, in Section 14.6, “Blocking Queues,” on p. 898, you will see how to use a blocking queue to synchronize threads that work on a common task. You should also explore parallel streams—see Volume II, Chapter 1.
+• If the synchronized keyword works for your situation, by all means, use it. You’ll write less code and have less room for error. Listing 14.8 shows the bank example, implemented with synchronized methods.
+• Use Lock/Condition if you really need the additional power that these constructs give you.
+
+
+Volatile
+The volatile keyword offers a lock-free mechanism for synchronizing access to an instance field.
+You can declare shared variables as volatile provided you perform no operations other than assignment.
+However, volatile doesn't offer atomicity.
+
+Atomic
+if you want to do more than just assignement (volatile offers), you can use AtomicInteger ...and other classes from java.util.concurrent.atomic package.
+these classes have functions which perform atomic actions like incrementAndGet, compareAndSet
+
+
+ThreadLocal
+Sometimes we just want to assign an object for each thread so that each thread has an object of its own there by no need for synchronizing.
+Look at the code example.
+
+
+Lock Testing and Timeouts
+A thread blocks indefinitely when it calls the lock method to acquire a lock that is owned by another thread. You can be more cautious about acquiring a lock. The tryLock method tries to acquire a lock and returns true if it was successful. Otherwise, it immediately returns false, and the thread can go off and do something else.
+The lock method cannot be interrupted. If a thread is interrupted while it is waiting to acquire a lock, the interrupted thread continues to be blocked until the lock is available. If a deadlock occurs, then the lock method can never terminate.
+However, if you call tryLock with a timeout, an InterruptedException is thrown if the thread is interrupted while it is waiting. This is clearly a useful feature because it allows a program to break up deadlocks.
+
+
+RenterrentReadWrtieLock where we want to share the object read access to multiple threads and for writing exclusing access is granted. 
+private ReentrantReadWriteLock rwl = new ReentrantReadWriteLock();
+private Lock readLock = rwl.readLock();
+private Lock writeLock = rwl.writeLock()
+now use readLock in accessors and writelock in mutators.
+
+
+Why Stop and Suspend are depricated.
+Stop: calling stops terminates the thread. ThreadDeath object is generated and thrown. calling stop may corrupt the objects state.
+Suspend: if a thread has acquired a lock and calles suspend, then lock is not released. resulting into contentions and deadlocks.
+
+Queue: FIFO
+Deque: is a double ended queue.
+
+Blocking Queues
+Blocking Queues are high level constructs which offer synchronization. we should use this instead of low level constructs. methods put and take blocks if the queue is full and empty.
+Types of BQueues
+LinkedBlockingQueue: has no upper bound. but it can be set optionally. this is double-ended version.
+ArrayBlockingQueue: this has an upper bound. with an option to specify fairness (longest waiting thread is given priority). dont use fairness.
+PriorityBlockingQueue: unbounded. this is not fifo. items are removed based on priority.
+DelayQueue (implements Delayed Interface): items are removed only if their delay has expired.
+LinkedTransferQueue (implements TransferQueue interface): producers are blocked till the time there is consumer which can take the item. producer calling queue.transfer(item) will get blocked if there is no consumer thread available.
+
+Thread Safe Collections - core seperately.
+
+Callable
+
+
+
+
+___
+Synchronizers
+
+Semaphores: Semaphores are used to control the number of threads that can access a resource. look at SemaphoreTest class.
+
+Barrier: CyclicBarrier makes a set of thread wait till the last thread joins. and the barrier allows all threads to pass.
+
+Latches:  A latch makes a group of threads wait until it reaches its terminal state. Once a latch reaches its terminal state, it lets all threads pass through.
+Unlike a barrier, it is a one-time object. It cannot be reset and reused. A latch is used where a number of activities cannot proceed until a certain number of one-time activities have completed.
+For example, a service should not start until all services that it depends on have started. The CountDownLatch class in the java.util.concurrent package provides the implementation of a latch. 
+
+Exchangers: Two threads meet at synchrnization point and then exchange an object and then continue with thier activities.
+
+
+
+

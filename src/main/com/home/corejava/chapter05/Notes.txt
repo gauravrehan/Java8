@@ -1,0 +1,43 @@
+Inheritance
+
+The subclass constructor should first call the base class constructor using super(,,,). if a sub class constructor doesn't call the base class constructor explicitly then the default constructor is called by default.if the default constructor doesn't exists then java compiler reports error.
+
+dynamic binding: selection of appropriate method to call at the runtime is called dynamic binding. look at the ManagerTest.java.
+when a.somefunction(b) is called:
+first compiler look out for class of a and all the super classes of a. it looks for all the methods with name somefunction in class and its super classes (private method of super classes are ignored).
+Next compiler performs the overloading resolution.
+If the method is private, static, final, or a constructor, then the compiler knows exactly which method to call. (The final modifier is explained in the next section.) This is called static binding. Otherwise, the method to be called depends on the actual type of the implicit parameter, and dynamic binding must be used at runtime.
+hen the program runs and uses dynamic binding to call a method, then the virtual machine must call the version of the method that is appropriate for the actual type of the object to which x refers. Let�s say the actual type is D, a subclass of C. If the class D defines a method f(String), that method is called. If not, D�s superclass is searched for a method f(String), and so on.
+t would be time-consuming to carry out this search every time a method is called. Therefore, the virtual machine precomputes for each class a method table that lists all method signatures and the actual methods to be called.
+
+In Java, you do not need to declare a method as virtual. Dynamic binding is the default behavior. If you do not want a method to be virtual, you tag it as final.
+
+The ArraryStoreException. in what condition is it thrown?
+
+The Employee class and Manager class inheritance example with equals override.
+
+To protect from overriding, mark a method or a class as final. if all methods in a class are marked as final then the whole class becomes final.
+
+Use instanceof to check whether casting is possible or not. To avoid class cast exception.
+
+Abstract classes (cannot instantiate). abstract class has to be extended and concrete implementation has to be done for all the abstract methods.
+
+
+Here is a summary of the four access modifiers in Java that control visibility:
+1. Visible to the class only (private).
+2. Visible to the world (public).
+3. Visible to the package and all subclasses (protected).
+4. Visible to the package�the (unfortunate) default. No modifiers are needed.
+
+
+Inheritance rules
+a. Place common operations and fields in the superclass.
+b. Don�t use protected fields. However, protected methods can be useful to indicate methods that are not ready for general use and should be redefined in subclasses.
+c. Use inheritance to model the �is�a� relationship.
+d. Don�t use inheritance unless all inherited methods make sense.
+e. Don�t change the expected behavior when you override a method.
+f. Use polymorphism, not type information.
+g. Don�t overuse reflection.
+
+
+
