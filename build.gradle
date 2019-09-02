@@ -11,6 +11,20 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main']
+        }
+    }
+
+    test {
+        java {
+            srcDirs = ['src/test']
+        }
+    }
+}
+
 dependencies {
     // https://mvnrepository.com/artifact/com.google.guava/guava
     compile group: 'com.google.guava', name: 'guava', version: '27.1-jre'
