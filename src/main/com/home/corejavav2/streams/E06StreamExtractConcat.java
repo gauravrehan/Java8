@@ -18,7 +18,16 @@ public class E06StreamExtractConcat {
         Stream<String> song1 = Stream.of("gentle1", "black1", "yellow1", "black1");
         Stream.concat(song, song1).forEach(System.out::println);
 
-        
+        //distinct
+        Stream<String> song2 = Stream.of("gentle1", "black1", "yellow1", "black1");
+        song2.distinct().forEach(System.out::println);
+
+        //peek. helps in debugging as below we can set breakpoints for debugging
+        Stream<String> song3 = Stream.of("gentle1", "black1", "yellow1", "black1");
+        song3.peek(s -> System.out.println("peek ="+ s)).distinct().peek(s -> System.out.println("peekdis ="+ s)).count();
+
+
+
 
     }
 }
