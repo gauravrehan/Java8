@@ -1,6 +1,6 @@
 - API on local - in memory
     C - done
-    R - pending (1hr)
+    R - done
     U - done
     D - done
 - API with persistence (2 hrs)
