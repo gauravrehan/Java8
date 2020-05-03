@@ -1,11 +1,12 @@
 - API on local - in memory
     C - done
-    R - pending
+    R - pending (1hr)
     U - done
     D - done
-- API with persistence
+- API with persistence (2 hrs)
 - Enforce consistency (for horizontal scaling)
-- Can we move to ES?
-- Proposal for Raman
-- is the proposal cloud ready?
-- Setup UI code on local
+- Can we move to ES? (2 hrs)
+- Proposal for Raman (1 hr)
+- is the proposal cloud ready? (1 hr)
+- Setup UI code on local (1 hr)
+- Chapter?

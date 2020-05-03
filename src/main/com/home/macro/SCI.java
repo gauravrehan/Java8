@@ -11,7 +11,7 @@ public interface SCI {
     boolean DeleteNode(String node);
 
     //Get/Search
-    List<Node> GetTree(Node node);
+    List<Node> GetTree();
 
     List<Node> Search(String searchText);
 

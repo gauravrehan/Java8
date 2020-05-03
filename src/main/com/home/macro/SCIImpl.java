@@ -1,5 +1,6 @@
 package com.home.macro;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SCIImpl implements SCI {
@@ -75,20 +76,66 @@ public class SCIImpl implements SCI {
         return false;
     }
 
+    //visualize the tree
     @Override
-    public List<Node> GetTree(Node node) {
-        return null;
+    public List<Node> GetTree() {
+        List<Node> list = new ArrayList<>();
+        traverseAndAdd(root, list);
+        return list;
+    }
+
+    private void traverseAndAdd(Node node, List<Node> list)
+    {
+        list.add(node);
+        for(Node n: node.getChildren())
+        {
+            traverseAndAdd(n, list);
+        }
     }
 
     @Override
     public List<Node> Search(String searchText) {
-        return null;
+        //first locate the node with the name.
+        //Trace upto the the parent and return
+        List<Node> l = new ArrayList<>();
+        SearchAndAdd(root, searchText, l);
+        return l;
+        //return null;
     }
 
-    private Node getNode(String id) {
-        // TODO: 03-05-2020 implement getNode
-        //DFS or BFS
-        return new Node();
+    private void SearchAndAdd(Node n, String searchText, List<Node> list)
+    {
+        if (n.getName() == searchText)
+        {
+            list.add(n);
+        }
+        for(Node nChild : n.getChildren())
+        {
+            SearchAndAdd(nChild, searchText, list);
+        }
+    }
+
+    private Node getNode(String id)
+    {
+        List<Node> found = new ArrayList<>();
+        dfs(id, root, found);
+        return found.get(0);
+    }
+
+
+    private void dfs(String id, Node node, List<Node> found)
+    {
+        if(node != null && node.getId() == id) {
+            found.add(node);
+            return;
+        }
+        else
+        {
+            for(Node n : node.getChildren())
+            {
+                dfs(id, n, found);
+            }
+        }
     }
 
 }
