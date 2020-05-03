@@ -1,0 +1,11 @@
+- API on local - in memory
+    C - done
+    R - pending
+    U - done
+    D - done
+- API with persistence
+- Enforce consistency (for horizontal scaling)
+- Can we move to ES?
+- Proposal for Raman
+- is the proposal cloud ready?
+- Setup UI code on local
