@@ -1,7 +1,7 @@
 package com.home.memorymgmt.gc.ref;
 
 
-import com.home.apijava8.Person;
+import com.home.apijava8.comparator.Person;
 
 import java.lang.ref.WeakReference;
 
