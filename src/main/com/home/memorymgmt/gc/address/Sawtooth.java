@@ -62,7 +62,7 @@ public static void main(String... args) throws Exception {
 
 class GCMe {
     long data;
-    long _;
+    /*long _;
     long __;
     long ___;
     long ____;
@@ -78,6 +78,6 @@ class GCMe {
     long ______________;
     long _______________;
     long _________________;
-    long __________________;
+    long __________________;*/
 }
 
