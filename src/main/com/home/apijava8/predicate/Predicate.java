@@ -1,6 +1,6 @@
 package com.home.apijava8.predicate;
 
-import com.sun.org.apache.xpath.internal.operations.String;
+
 
 @FunctionalInterface
 public interface Predicate<T> {
