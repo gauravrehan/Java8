@@ -25,19 +25,26 @@ public class E11StreamGroupingBy {
 
         //if we want Map<String, List<Person>> with grouping based on id
         Map<String, List<Person>> mapPersonList = listPerson.stream()
-                .collect(Collectors.groupingBy(Person::getId, toList()));
+                .collect(Collectors.groupingBy(Person::getId, Collectors.toList()));
         System.out.println(mapPersonList);
 
 
         //if we want Map<String, Set<Person>> with grouping based on id
         Map<String, Set<Person>> mapPersonSet = listPerson.stream()
-        .collect(Collectors.groupingBy(Person::getId, toSet()));
+        .collect(Collectors.groupingBy(Person::getId, Collectors.toSet()));
         System.out.println(mapPersonSet);
 
         //if we want Map<String, Long> where long is the count of persons having same id
         Map<String, Long> mapPersonCount = listPerson.stream()
-                .collect(Collectors.groupingBy(Person::getId, counting()));
+                .collect(Collectors.groupingBy(Person::getId, Collectors.counting()));
         System.out.println(mapPersonCount);
+
+        //if we want Map<String, Long> where long is the count of persons having same id
+        Map<String, Long> mapPersonCountV2 = listPerson.stream()
+                .collect(Collectors.groupingBy(Person::getId, Collectors.reducing(0L, e -> 1L, Long::sum)));
+        System.out.println(mapPersonCount);
+
+
 
 
         //if we want Map<String, Integer> where int is the sum of all the ages of the person with same id
